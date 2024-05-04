@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Box API Call</title>
+</head>
+<body>
+    <h1>Enter Prompt and Submit</h1>
+    <form id="dataForm" method="post" action="/get_data">
+        <label for="prompt">Enter prompt:</label><br>
+        <input type="text" id="prompt" name="prompt"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="apiResponse"></div>
+
+    <script>
+        document.getElementById("dataForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            var promptValue = document.getElementById("prompt").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/get_data", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({prompt: promptValue}));
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var responseData = xhr.responseText;
+                    document.getElementById("apiResponse").innerHTML = responseData;
+                } else {
+                    alert("API call failed!");
+                }
+            };
+        });
+    </script>
+</body>
+</html>
